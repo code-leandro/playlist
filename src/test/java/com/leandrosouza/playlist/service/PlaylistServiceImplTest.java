@@ -1,5 +1,6 @@
 package com.leandrosouza.playlist.service;
 
+import com.leandrosouza.playlist.service.impl.PlaylistServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;

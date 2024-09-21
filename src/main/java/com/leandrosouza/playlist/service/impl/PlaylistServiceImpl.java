@@ -1,6 +1,7 @@
-package com.leandrosouza.playlist.service;
+package com.leandrosouza.playlist.service.impl;
 
 import com.leandrosouza.playlist.model.Playlist;
+import com.leandrosouza.playlist.service.PlaylistService;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;

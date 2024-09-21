@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: playlist
+
+resilience4j.retry:
+  instances:
+    openWeatherMapRetry:
+      maxAttempts: 5
+      waitDuration: 1s
+      exponentialBackoff:
+        multiplier: 2
+        maxDelay: 5s
+      retryExceptions:
+        - java.io.IOException
+        - org.springframework.web.client.HttpClientErrorException
+        - java.net.SocketException
