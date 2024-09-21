@@ -1,16 +1,20 @@
 package com.leandrosouza.playlist.controller;
 
 import com.leandrosouza.playlist.api.PlaylistResponse;
-import com.leandrosouza.playlist.model.Playlist;
 import com.leandrosouza.playlist.service.PlaylistService;
 import com.leandrosouza.playlist.service.TemperatureService;
+import com.leandrosouza.playlist.service.impl.TemperatureOpenWeatherMapService;
+import com.leandrosouza.playlist.service.impl.TemperatureSimulateFailServiceImpl;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,11 +25,18 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 public class AppController {
 
-    @Autowired
     private TemperatureService temperatureService;
 
     @Autowired
     private PlaylistService playlistService;
+
+    @Qualifier("OpenWeatherMap")
+    @Autowired
+    TemperatureService temperatureServiceOpenWeather;
+
+    @Qualifier("TemperatureSimulateFail")
+    @Autowired
+    TemperatureService temperatureServiceFail;
 
     @GetMapping("/playlist")
     @Async
@@ -40,5 +51,23 @@ public class AppController {
                     log.info("playlist: {}", playlist);
                     return new PlaylistResponse(playlist);
                 });
+    }
+
+    @PostMapping("/changeTemperatureService")
+    public ResponseEntity<String> changeTemperatureService(@RequestParam String service) {
+        if ("real".equalsIgnoreCase(service)) {
+            this.temperatureService = temperatureServiceOpenWeather;
+            return ResponseEntity.ok("changed!");
+        } else if ("failed".equalsIgnoreCase(service)) {
+            this.temperatureService = temperatureServiceFail;
+            return ResponseEntity.ok("changed!");
+        }
+        return ResponseEntity.internalServerError().body("Error!");
+    }
+
+    @PostConstruct
+    public void postConstruct() {
+        if (this.temperatureService == null)
+            this.temperatureService = temperatureServiceOpenWeather;
     }
 }
