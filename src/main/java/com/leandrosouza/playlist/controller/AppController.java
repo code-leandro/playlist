@@ -1,12 +1,9 @@
 package com.leandrosouza.playlist.controller;
 
 import com.leandrosouza.playlist.api.PlaylistResponse;
-import com.leandrosouza.playlist.model.Playlist;
-import com.leandrosouza.playlist.service.PlaylistService;
+import com.leandrosouza.playlist.service.PlaylistServiceImpl;
 import com.leandrosouza.playlist.service.TemperatureService;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -25,7 +22,7 @@ public class AppController {
     private TemperatureService temperatureService;
 
     @Autowired
-    private PlaylistService playlistService;
+    private PlaylistServiceImpl playlistServiceImpl;
 
     @GetMapping("/playlist")
     @Async
@@ -34,7 +31,7 @@ public class AppController {
                 .thenApply(temperature -> {
                     log.info("city: {}", city);
                     log.info("temperature: {}", temperature);
-                    return playlistService.getMusicByTemperature(temperature);
+                    return playlistServiceImpl.getMusicByTemperature(temperature);
                 })
                 .thenApply(playlist -> {
                     log.info("playlist: {}", playlist);

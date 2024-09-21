@@ -2,6 +2,7 @@ package com.leandrosouza.playlist.service;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -9,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.concurrent.CompletableFuture;
 
 @Service
+@Slf4j
 public class TemperatureService {
 
     private static final String API_KEY = "06819ddf913c9af60a900d2b3d11c056"; // Substitua pela sua chave
@@ -25,6 +27,7 @@ public class TemperatureService {
                 assert response != null;
                 return response.getMain().getTemp();
             } catch (Exception e) {
+                log.warn("Failed to get temperature");
                 throw new RuntimeException("Failed to get temperature", e);
             }
         });
