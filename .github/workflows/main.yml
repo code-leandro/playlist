@@ -1,0 +1,43 @@
+name: Deploy to Amazon ECR
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout do código
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Setup do AWS CLI
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1  # Ajuste para sua região
+
+      # Login no Amazon ECR
+      - name: Login to Amazon ECR
+        run: |
+          aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin aws_account_id.dkr.ecr.us-east-1.amazonaws.com
+
+      # Build da imagem Docker
+      - name: Build the Docker image
+        run: |
+          docker build -t repository_name .
+
+      # Tag da imagem com o SHA do commit
+      - name: Tag the Docker image
+        run: |
+          docker tag repository_name:latest aws_account_id.dkr.ecr.us-east-1.amazonaws.com/repository_name:latest
+
+      # Push da imagem para o ECR
+      - name: Push Docker image to Amazon ECR
+        run: |
+          docker push aws_account_id.dkr.ecr.us-east-1.amazonaws.com/repository_name:latest
