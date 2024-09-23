@@ -1,6 +1,13 @@
 spring:
   application:
     name: playlist
+  data:
+    redis:
+      host: redis-container
+      port: 6379
+
+server:
+  port: 80
 
 resilience4j.retry:
   instances:
@@ -14,3 +21,8 @@ resilience4j.retry:
         - java.io.IOException
         - org.springframework.web.client.HttpClientErrorException
         - java.net.SocketException
+
+#logging:
+#  level:
+#    root: DEBUG
+
