@@ -3,7 +3,7 @@ spring:
     name: playlist
   data:
     redis:
-      host: redis-container
+      host: ${HOST_REDIS:redis-container}
       port: 6379
 
 server:
