@@ -9,9 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class PlaylistApplication {
 
 	public static void main(String[] args) {
-		log.info("----------------------------------------");
-		log.info("Starting");
-		log.info("----------------------------------------");
 		SpringApplication.run(PlaylistApplication.class, args);
 	}
 
