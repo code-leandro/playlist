@@ -1,6 +1,6 @@
 # Projeto: Playlist Sugerida por Temperatura
 
-Este projeto foi desenvolvido tem como objetivo, criar um serviço capaz de sugerir playlists musicais com base na temperatura de uma cidade fornecida. O serviço foi construído usando **Java** e o framework **Spring Boot** e está rodando em uma instância EC2 da AWS.
+Este projeto foi desenvolvido com o objetivo de criar um serviço capaz de sugerir playlists musicais com base na temperatura de uma cidade fornecida. O serviço foi construído usando **Java** e o framework **Spring Boot** e está rodando em uma instância EC2 da AWS.
 
 ![Arquitetura do Projeto](https://leandro-hero.s3.us-east-2.amazonaws.com/arquitetura-playlist.png)
 
